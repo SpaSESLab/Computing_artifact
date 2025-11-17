@@ -15,3 +15,5 @@ outputs/test/*
 outputs/final/*
 !outputs/final/.gitkeep
 
+.httr-oauth
+.quarto
