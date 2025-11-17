@@ -1,0 +1,178 @@
+---
+title: "Style Guide Tutorial"
+output: html_document
+---
+
+# Learning How to Use the "styler" and "lintr" Packages
+
+## Package Descriptions
+
+-   **"lintr"** : Checks script for adherence to a given style, identifying syntax errors and possible semantic issues then reports them to you so you can take action.
+
+-   **"styler"** : Formats your code according to the tidyverse style guide (or your custom style guide).
+
+-   **"prettycode"** : Is used by styler to provide color-coded output when printing styled code to the console.
+
+### Note:
+
+While **"lintr"** identifies both syntax and style errors, **"styler"** focuses solely on correcting style issues. You will need to manually address any syntax errors. However, using **"lintr"** to pinpoint these syntax errors can be more beneficial than standard error messages, which can often be vague and confusing.
+
+## Load Necessary Packages
+
+```{r}
+library(styler)
+library(prettycode)
+library(lintr)
+library(ggplot2)
+```
+
+## Example Code
+
+```{r}
+# Using the iris dataset and selecting columns
+data=iris[,c("Sepal.Length","Sepal.Width","Species")]
+
+# Filtering rows where Sepal.Length is greater than 5
+filtered_data=data[data$Sepal.Length>5,]
+
+# Plotting: Scatter plot of Sepal Length vs. Sepal Width
+ggplot(filtered_data,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+
+geom_point()+theme_classic()
+```
+
+This script contains several issues that, while obvious to some, can be tedious and frustrating to catch manually. As your scripts grow more complex, it becomes increasingly difficult to spot every problem by eye. This is where the **"lintr"** package comes in, streamlining the process of identifying and fixing code issues.
+
+## Using "lintr" Manually
+
+```{r}
+# Lint the code (this code block will show the errors)
+lintr::lint(text = c(
+  '# Using the iris dataset and selecting columns',
+  'data=iris[,c("Sepal.Length","Sepal.Width","Species")]',
+  '',
+  '# Filtering rows where Sepal.Length is greater than 5',
+  'filtered_data=data[data$Sepal.Length>5,]',
+  '',
+  '# Plotting: Scatter plot of Sepal Length vs. Sepal Width',
+  'ggplot(filtered_data,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+',
+  'geom_point()+theme_classic()'
+))
+```
+
+### "lintr" Results Explanation
+
+The output from this code chunk displays all the issues identified by the **"lintr"** package. Let's breakdown one of the messages to understand it better:
+
+-   **`<text>:2:5:`**: Indicates that the error is in the second line of the code (2), at the 5th character (5).
+-   **`style:`**: Indicates that the issue is related to coding style, rather than a syntax error.
+-   **`[assignment_linter]`**: This specifies the specific linting rule that has been violated. In this case, it's the assignment linter, which checks for how assignments are made in R.
+-   **`Use <-, not =, for assignment.`**: This is the actual message explaining the issue.
+-   **`data=iris[,c("Sepal.Length","Sepal.Width","Species")]`**: This shows the line of code that triggered the linting warning.
+-   **`^`**: The caret (`^`) points to the exact position in the line of code where the linting issue is detected.
+-   `^~`: The tilde (`~`) specifically points to the character that is part of the unexpected syntax or issue in your code.
+
+While some users may find it straightforward to address these issues manually, it can become increasingly challenging and tedious as your scripts grow in complexity. This is where the **"styler"** package proves invaluable, as it automatically resolves your style issues, saving you time and effort.
+
+## Using "styler" Manually
+
+```{r}
+# Use styler to format the code
+styler::style_text(c(
+  '# Using the iris dataset and selecting columns',
+  'data=iris[,c("Sepal.Length","Sepal.Width","Species")]',
+  '',
+  '# Filtering rows where Sepal.Length is greater than 5',
+  'filtered_data=data[data$Sepal.Length>5,]',
+  '',
+  '# Plotting: Scatter plot of Sepal Length vs. Sepal Width',
+  'ggplot(filtered_data,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+',
+  'geom_point()+theme_classic()'
+))
+```
+
+## Using the "lintr" and "styler" Packages Through Addins
+
+You may be wondering, "Am I really saving time and effort if I have to retype my code every time to use these packages?" That's a valid concern. The great news is that both of these packages can be accessed through the Addins tool, allowing you to utilize their features without having to retype anything.
+
+### If you are not wanting to use "lintr" manually, follow these steps:
+
+1.  Install **"lintr"** if you haven't already.
+2.  Restart RStudio if it's already open, just to make sure it recognizes the new Addin.
+3.  Open the script or code file you want to lint in RStudio.
+4.  Go to the Addins Menu
+    -   Click on the Addins drop down menu at the top of RStudio.
+    -   In the search bar type **"lintr"**
+5.  In the Addins menu, you should see an option like:
+    -   "Lint current file" or "Lint selected lines" (depending on the version of RStudio and lintr).
+6.  Select the "Lint current file" option to check your entire script for issues.
+7.  A "Markers" window will appear at the bottom of RStudio, listing all the linting issues and the lines where they occur. You can click on each issue to navigate directly to that line.
+
+### If your are not wanting to use "styler" manually, follow these steps:
+
+1.  Install **"styler"**, if you haven't already.
+2.  Restart RStudio if it's already open, just to make sure it recognizes the new Addin.
+3.  Open the script or code file you want to style in RStudio.
+4.  Go to the Addins Menu
+    -   Click on the Addins drop down menu at the top of RStudio.
+    -   In the search bar type **"styler"**
+5.  In the Addins menu, you should see an option like:
+    -   "Style active file": This will apply styler to the entire open script.
+    -   "Style selected code": This will apply styler only to the portion of the code you have highlighted.
+6.  Select the option you want, and RStudio will automatically reformat the code according to the tidyverse style guide.
+
+Let's give it a try on the code below:
+
+```{r}
+# Using the iris dataset and selecting columns
+data=iris[,c("Sepal.Length","Sepal.Width","Species")]
+
+# Filtering rows where Sepal.Length is greater than 5
+filtered_data=data[data$Sepal.Length>5,]
+
+# Plotting: Scatter plot of Sepal Length vs. Sepal Width
+ggplot(filtered_data,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+
+geom_point()+theme_classic()
+```
+
+## Identifying Syntax Errors with "lintr"
+
+Our previous script only contained style errors. However, **"lintr"** is also capable of identifying syntax errors, which you can address manually. Give the code chunk below a try and examine the results.
+
+### Example Code:
+
+```{r}
+# Create a data frame from the iris dataset (missing assignment operator)
+iris_data iris[, c("Sepal.Length", "Sepal.Width", "Species")]
+
+# Filtering rows where Sepal.Length is greater than 5 (missing closing bracket)
+filtered_data <- iris_data[iris_data$Sepal.Length > 5
+
+# Attempting to create a scatter plot (missing aesthetic mapping)
+ggplot(filtered_data, aes(x = Sepal.Length, y = Sepal.Width color = Species)) +
+geom_point()
+
+```
+
+How well does the Error Message describe our issue?
+
+### Using "lintr" for Syntax Errors
+
+Now let's see how well **"lintr"** identifies and describes our code issues:
+
+```{r}
+# Lint the code
+lint(text = c(
+  'iris_data iris[, c("Sepal.Length", "Sepal.Width", "Species")]',
+  'filtered_data <- iris_data[iris_data$Sepal.Length > 5',
+  'ggplot(filtered_data, aes(x = Sepal.Length, y = Sepal.Width color = Species)) +',
+  'geom_point()'
+))
+```
+
+### "lintr" Results Explanation
+
+-   **`<text>:1:11:`**: Indicates that the error is in the first line of the code (1), at the 11th character (11).
+-   **`error:`**: Indicates that the issue is a syntax error, meaning there is something wrong with how the code is structured or written.
+-   **`[error] unexpected symbol`**: This is the specific error message explaining the nature of the problem. "Unexpected symbol" means that the R interpreter found a character or combination of characters that it did not expect at that position in the code.
+-   **`iris_data iris[, c("Sepal.Length", "Sepal.Width", "Species")]`**: This shows the line of code that triggered the linting error.
+-   **`^`**: The caret (`^`) points to the exact position in the line of code where the linting issue is detected.
