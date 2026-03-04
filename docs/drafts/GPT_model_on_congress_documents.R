@@ -10,11 +10,9 @@ library(stringr)
 #Reading data
 
 df_full <- read.csv(
-  "/Users/agnesnamyalo/Desktop/RESEARCH/DATA/extracted_outputs_full_dataset.csv",
+  "extracted_outputs_full_dataset.csv",
   stringsAsFactors = FALSE
 )
-
-
 
 # Take only first 100 rows
 df <- df_full %>% slice(1:300)
@@ -22,7 +20,7 @@ df <- df_full %>% slice(1:300)
 # 2. SET API KEY (Store in .Renviron in production)
 
 #API KEY  
-Sys.setenv(OPENAI_API_KEY = "sk-proj")
+Sys.setenv(OPENAI_API_KEY = "sk-proj")  #provided on request
 
 #SAFE NULL OPERATOR
 
@@ -59,7 +57,6 @@ baseline_contains_cause_word <- function(text) {
   t <- tolower(text)
   as.integer(any(str_detect(t, cues)))
 }
-
 
 #first NPF PROMPT BUILDER
 build_npf_prompt <- function(paragraph) {
