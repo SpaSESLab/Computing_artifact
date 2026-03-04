@@ -9,7 +9,7 @@ library(stringr)
 
 #Reading data
 
-df <- read.csv("/Users/agnesnamyalo/Desktop/RESEARCH/DATA/wildlife_news_articles.csv", stringsAsFactors = FALSE)
+df <- read.csv("wildlife_news_articles.csv", stringsAsFactors = FALSE)
 
 # Take only first 50 rows
 df_test <- df %>% slice(1:300)
@@ -21,7 +21,7 @@ df_test <- df %>% slice(1:300)
 # 2. SET API KEY (Store in .Renviron in production)
 
 #API KEY  
-Sys.setenv(OPENAI_API_KEY = "sk-proj")
+Sys.setenv(OPENAI_API_KEY = "sk-proj")  #provided on request
 
 
 #SAFE NULL OPERATOR
