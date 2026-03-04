@@ -19,7 +19,7 @@ df_full <- read.csv(
 # Take only first 100 rows
 df <- df_full %>% slice(1:300)
 
-# 2. SET API KEY (Store in .Renviron in production)
+# SET API KEY (Store in .Renviron in production)
 
 #API KEY  
 Sys.setenv(OPENAI_API_KEY = "sk-proj")
