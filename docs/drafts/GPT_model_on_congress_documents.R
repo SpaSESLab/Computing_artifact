@@ -14,14 +14,12 @@ df_full <- read.csv(
   stringsAsFactors = FALSE
 )
 
-
-
-# Take only first 100 rows
+# Take only first 300 rows
 df <- df_full %>% slice(1:300)
 
 # SET API KEY (Store in .Renviron in production)
 
-#API KEY  
+#API KEY  --provided on requesr
 Sys.setenv(OPENAI_API_KEY = "sk-proj")
 
 #SAFE NULL OPERATOR
@@ -275,7 +273,7 @@ write_csv(final_df_congress, "narrative_coded_results_with_baselines_congress_30
 
 final_df_congress <- read_csv("narrative_coded_results_with_baselines_congress_300.csv")
 
-#PUTTING EXTRACTED EVENT INTO CATEGORIES
+#Rule-based classification--PUTTING EXTRACTED EVENT INTO CATEGORIES
 
 final_df_congress <- final_df_congress %>%
   mutate(event_type = case_when(
@@ -295,7 +293,7 @@ final_df_congress <- final_df_congress %>%
     # Petitions & legal action
     str_detect(tolower(event), "petition|lawsuit|file|sue|court") ~ "Litigation / Petition",
     
-    # Congressional / legislative reform
+    # Congressional/legislative reform
     str_detect(tolower(event), "bill|amendment|reform|rollback") ~ "Legislative Reform",
     
     # Regulatory decision (agency action)
