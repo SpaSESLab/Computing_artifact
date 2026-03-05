@@ -1,5 +1,5 @@
 
-#The script implements a computational pipeline that extracts policy narratives from congressional text using a large language model. 
+#The script implements a computational pipeline that extracts policy narratives from wildlife news articles using a large language model. 
 #The workflow has five main stages: data loading, baseline detection, prompt construction, API interaction with the language model, 
 #and post-processing to classify narrative components such as events and morals.
 
