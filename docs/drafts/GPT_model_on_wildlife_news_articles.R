@@ -1,4 +1,8 @@
 
+#The script implements a computational pipeline that extracts policy narratives from congressional text using a large language model. 
+#The workflow has five main stages: data loading, baseline detection, prompt construction, API interaction with the language model, 
+#and post-processing to classify narrative components such as events and morals.
+
 #LIBRARIES
 library(httr)
 library(jsonlite)
@@ -11,7 +15,7 @@ library(stringr)
 
 df <- read.csv("wildlife_news_articles.csv", stringsAsFactors = FALSE)
 
-# Take only first 50 rows
+# Take only first 300 rows
 df_test <- df %>% slice(1:300)
 
 #Reading first 5 rows and all columns(columns--document_id, extract_number, extract_text)
