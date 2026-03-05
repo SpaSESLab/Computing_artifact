@@ -53,7 +53,7 @@ baseline_any_esa_keyword <- function(text) {
 }
 
 
-#Baseline 2: Causal Language Detection -- Is the paragraph expressing causality?
+#Baseline 2: Causal Language Detection -- Is the paragraph expressing causality (surface framing)?
 baseline_contains_cause_word <- function(text) {
   
   cues <- c(
