@@ -176,10 +176,10 @@ call_openai_json <- function(prompt_text, timeout = 30) {
   
   body <- list(
     model = "gpt-4o-mini",
-    temperature = 0,
-    max_tokens = 300,
-    response_format = list(type = "json_object"),
-    messages = list(
+    temperature = 0,  #Temperature controls the randomness of the model’s output. So I chose zero for a consistent response (I want the model to produce the same output for the same input every time)
+    max_tokens = 300, # it controls the maximum length of the model's response. I set this limit to prevent overly long responses while ensuring enough space for complete outputs.
+    response_format = list(type = "json_object"), #Forcing the model to return valid JSON format. Ensuring that the model returns machine-readable responses that can be directly parsed into the dataframe for analysis.
+    messages = list(  #messages represent the conversation with the model.(Since OpenAI API uses a chat-based structure)
       list(role = "system", content = "Respond ONLY with valid JSON."),
       list(role = "user", content = prompt_text)
     )
@@ -215,6 +215,7 @@ call_openai_json <- function(prompt_text, timeout = 30) {
 
 
 #EXTRACTION WRAPPERS
+#Combinining the prompt builder and API call.
 
 extract_npf <- function(paragraph) {
   
