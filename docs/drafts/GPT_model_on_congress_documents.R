@@ -31,7 +31,13 @@ Sys.setenv(OPENAI_API_KEY = "sk-proj")
 `%||%` <- function(a, b) if (is.null(a) || length(a) == 0) b else a
 
 #BASELINE MODELS
-#to know if my  results are not just picking up obvious keywords
+#to know if my  results are not just picking up obvious keywords.
+  
+#The baseline models are simple keyword detectors that identify ESA mentions and causal language. 
+#They provide a minimal benchmark so we can evaluate whether the GPT model is extracting deeper narrative structures 
+#rather than simply responding to obvious keywords.
+  
+#Baseline 1: ESA Mention Detection--Is the paragraph even talking about ESA?
 baseline_any_esa_keyword <- function(text) {
   
   kws <- c(
@@ -46,6 +52,8 @@ baseline_any_esa_keyword <- function(text) {
   as.integer(any(str_detect(t, kws)))
 }
 
+
+#Baseline 2: Causal Language Detection -- Is the paragraph expressing causality?
 baseline_contains_cause_word <- function(text) {
   
   cues <- c(
