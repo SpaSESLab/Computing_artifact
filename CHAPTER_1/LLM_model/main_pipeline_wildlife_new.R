@@ -5,7 +5,7 @@
 #SOURCE MODULES
 source("config.R")
 source("openai_call.R")
-source("Prompt_builder_new.R")
+source("Prompt_builder_news_articles.R")
 source("Extraction_wrappers_new.R")
 
 
@@ -15,8 +15,9 @@ df <- read.csv(
   stringsAsFactors = FALSE
 )
 
+#head(df[, 1:5])
 
-df_test <- df %>% slice(1:15)
+df_test <- df %>% slice(1:20)
 
 final_df_wildlife <- df_test %>%
   mutate(
@@ -58,8 +59,7 @@ final_df_wildlife <- df_test %>%
   df_temp } %>%
   
   #columns to extract
-  select(Text,
-         event,
+  select(GOID,Title,Date,Text,event,
          event_description,
          setting,
          characters,
@@ -70,7 +70,7 @@ final_df_wildlife <- df_test %>%
 
 #checking the first 5 rows
 final_df_wildlife %>%
-  select(event, event_description,
+  select(GOID,Title,Date,Text,event,event_description,
          setting, characters, plot, moral,
          meta_category) %>%
   head(5) %>%
@@ -86,8 +86,9 @@ final_df_wildlife %>%
   print()
 
 
-# SAVE
-# write_csv(final_df_wildlife,
-#           "narrative_coded_results_with_baselines_widlife_180.csv")
+#SAVE
+write_csv(final_df_wildlife,
+          "widlife_extracted_20.csv")
+
 
 
