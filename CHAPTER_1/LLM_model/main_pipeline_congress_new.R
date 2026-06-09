@@ -16,7 +16,7 @@ df <- read.csv(
 )
 
 
-df_test <- df %>% slice(1:20)
+df_test <- df %>% slice(1:10)
 
 final_df_congress <- df_test %>%
   mutate(
