@@ -1,7 +1,6 @@
 library(pscl)
 library(MASS)
 
-# load data
 df <- read.csv("listing_lagged_300.csv", stringsAsFactors = FALSE)
 
 #fitting hurdle model
@@ -12,7 +11,7 @@ m <- hurdle(cong_t ~ news_lag + cong_lag,
 
 summary(m)
 
-# pull coefficients
+# coefficients
 cf <- coef(m)
 
 #Part 1 coefficients
@@ -23,7 +22,7 @@ b0 <- cf["count_(Intercept)"]; b4 <- cf["count_news_lag"]; b3 <- cf["count_cong_
 
 
 
-# Part 1 threshold probabilities for each observed combination in my data
+# Part 1 threshold probabilities for combinations in my data
 combos <- unique(df[, c("news_lag", "cong_lag")])
 combos <- combos[order(combos$news_lag, combos$cong_lag), ]
 
