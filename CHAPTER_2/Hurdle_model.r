@@ -14,10 +14,23 @@ summary(m)
 
 # pull coefficients
 cf <- coef(m)
-#se <- sqrt(diag(vcov(m)))
 
-# Part 1 coefficients (zero_ prefix in pscl)
+#Part 1 coefficients
 g0 <- cf["zero_(Intercept)"]; g4 <- cf["zero_news_lag"]; g3 <- cf["zero_cong_lag"]
 
-# Part 2 coefficients (count_ prefix in pscl)
+#Part 2 coefficients
 b0 <- cf["count_(Intercept)"]; b4 <- cf["count_news_lag"]; b3 <- cf["count_cong_lag"]
+
+
+
+# Part 1 threshold probabilities for each observed combination in my data
+combos <- unique(df[, c("news_lag", "cong_lag")])
+combos <- combos[order(combos$news_lag, combos$cong_lag), ]
+
+combos$n      <- mapply(function(nl, cl) sum(df$news_lag == nl & df$cong_lag == cl),
+                        combos$news_lag, combos$cong_lag)
+combos$eta    <- g0 + g4 * combos$news_lag + g3 * combos$cong_lag
+combos$p_act  <- plogis(combos$eta)
+combos$p_sil  <- 1 - combos$p_act
+
+print(combos)
