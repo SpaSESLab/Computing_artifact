@@ -5,7 +5,7 @@
 #SOURCE MODULES
 source("config.R")
 source("openai_call.R")
-source("Prompt_builder_congress.R")
+source("Prompt_builder_general.R")
 source("Extraction_wrappers_new.R")
 
 
