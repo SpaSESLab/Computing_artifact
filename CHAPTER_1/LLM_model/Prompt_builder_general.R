@@ -1,4 +1,4 @@
-#LLM prompt generation--congress
+#LLM prompt generation--general
 
 # EVENT IDENTIFICATION PROMPT
 

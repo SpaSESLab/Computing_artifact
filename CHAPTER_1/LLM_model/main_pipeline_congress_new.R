@@ -16,7 +16,7 @@ df <- read.csv(
 )
 
 
-df_test <- df %>% slice(1:10)
+df_test <- df %>% slice(1:300)
 
 final_df_congress <- df_test %>%
   mutate(
@@ -88,6 +88,4 @@ final_df_congress %>%
 
 # SAVE
 write_csv(final_df_congress,
-           "congress_extracted_20.csv")
-
-
+           "congress_extracted_.csv")
