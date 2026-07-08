@@ -1,9 +1,7 @@
 
-#Title: "GENERIC OPENAI CALL"
-#Purpose: Handles all API communication
+#GENERIC OPENAI CALL - for handling all API communication
 
-  
-  
+
 call_openai_json <- function(prompt_text, timeout = 30) {
   body <- list(
     model = "gpt-4o-mini",
@@ -45,14 +43,8 @@ call_openai_json <- function(prompt_text, timeout = 30) {
 }
 
 
-# ============================
-# CALL FOR MULTI-DOCUMENT RESPONSES
-# Used for: build_cluster_prompt, build_category_description_prompt
-# Differences from call_openai_json:
-#   - max_tokens = 2000  (longer response needed for batch outputs)
-#   - no response_format constraint (returns JSON arrays, not objects)
-#   - strips markdown fences before parsing
-# ============================
+#CALL FOR MULTI-DOCUMENT RESPONSES for build_cluster_prompt, build_category_description_prompt.We increased the max_tokens to 2000 because of longer response needed for batch outputs
+
 call_openai_json_batch <- function(prompt_text,
                                    system_msg = "Return only valid JSON.",
                                    timeout    = 60) {
