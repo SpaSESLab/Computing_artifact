@@ -1,21 +1,9 @@
-# Title:   "EXTRACTION WRAPPERS"
-# Purpose: Calls prompt builders and OpenAI API functions,
-#          returns clean named lists for each document.
-#
-# Assumes:
-#   - build_event_identification_prompt() in Prompt_builder_new.R
-#   - build_npf_from_event_prompt()       in Prompt_builder_new.R
-#   - build_metacategory_prompt()         in Prompt_builder_new.R
-#   - call_openai_json()                  in openai_call.R
-#   - call_openai_json_batch()            in openai_call.R
-#   - `%||%`                              in config.R
+# EXTRACTION WRAPPERS - Calls prompt builders and OpenAI API functions, returns clean named lists for each document.
 
-# ============================
-# STEP 1 — EVENT IDENTIFICATION
-# Calls build_event_identification_prompt()
-# Returns: event, event_description
-# One API call per document via call_openai_json()
-# ============================
+
+#EVENT IDENTIFICATION - Calls build_event_identification_prompt() and then returns: event, event_description
+
+
 extract_event_identification <- function(paragraph) {
   
   result <- call_openai_json(
@@ -35,13 +23,10 @@ extract_event_identification <- function(paragraph) {
   )
 }
 
-# ============================
-# STEP 2 — NPF EXTRACTION USING IDENTIFIED EVENT
-# Calls build_npf_from_event_prompt()
-# Requires event and event_description from Step 1.
-# Returns: setting, characters (collapsed string), plot, moral
-# One API call per document via call_openai_json()
-# ============================
+
+#NPF EXTRACTION USING IDENTIFIED EVENT - Calls build_npf_from_event_prompt(), Requires event and event_description from Step 1 and then Returns: setting, characters, plot, moral
+
+
 extract_npf_from_event <- function(paragraph,
                                    event,
                                    event_description) {
@@ -94,20 +79,9 @@ extract_npf_from_event <- function(paragraph,
   )
 }
 
-# ============================
-# STEP 3 — META-CATEGORY ASSIGNMENT
-# Calls build_metacategory_prompt()
-# Takes the full vectors of event and event_description
-# from the entire corpus — runs ONE batch API call.
-# Returns: dataframe with row_idx and meta_category columns.
-#
-# Usage:
-#   meta_df <- extract_metacategories(
-#     events       = final_df_wildlife$event,
-#     descriptions = final_df_wildlife$event_description
-#   )
-#   final_df_wildlife$meta_category <- meta_df$meta_category
-# ============================
+
+#META-CATEGORY ASSIGNMENT - Calls build_metacategory_prompt()
+
 extract_metacategories <- function(events, descriptions) {
   
   # Replace NA with fallback strings so every record is sent
