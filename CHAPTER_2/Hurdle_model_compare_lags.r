@@ -1,6 +1,7 @@
 
-# Bayesian Hurdle Model — 
+# Bayesian Hurdle Model — News -> Congress direction
 # Lag Comparison (2-weeks vs 1-Month vs 2-Month)
+
 
 library(brms)
 library(emmeans)
