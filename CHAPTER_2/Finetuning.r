@@ -19,26 +19,39 @@ ITER      <- 4000
 WARMUP    <- 1000
 BAYES_SEED <- 1234
 
-
-df_2weeks <- read.csv("lag_2_weeks_new_check_with_journal.csv", stringsAsFactors = FALSE)
-df_1month <- read.csv("lag_1_month_new_check_with_journal.csv", stringsAsFactors = FALSE)
-df_2month <- read.csv("lag_2_months_new_check_with_journal.csv", stringsAsFactors = FALSE)
+#adding year as a factor
+df_2weeks <- read.csv("CHAPTER_2/lag_2_weeks_new_check_with_journal.csv", stringsAsFactors = FALSE)%>%
+  mutate(year = factor(format(as.Date(month_t), "%Y")))
+df_1month <- read.csv("CHAPTER_2/lag_1_month_new_check_with_journal.csv", stringsAsFactors = FALSE)%>%
+  mutate(year = factor(format(as.Date(month_t), "%Y")))
+df_2month <- read.csv("CHAPTER_2/lag_2_months_new_check_with_journal.csv", stringsAsFactors = FALSE) %>%
+  mutate(year = factor(format(as.Date(month_t), "%Y")))
 
 # journal is treated as a grouping factor
 df_2weeks$journal <- as.factor(df_2weeks$journal)
 df_1month$journal <- as.factor(df_1month$journal)
 df_2month$journal <- as.factor(df_2month$journal)
 
+#adding priors, adding varying slopes, adjusting sampling params to try and avoid diversgences
+
+
 # 2-WEEK LAG MODEL
 fit_2weeks <- brm(
   bf(
-    cong_t ~ news_lag2w + cong_lag2w + (1 | journal),
-    hu ~ news_lag2w + cong_lag2w + (1 | journal)
+    cong_t ~ news_lag2w + (news_lag2w | journal) + cong_lag2w + year,
+    hu ~ news_lag2w + (news_lag2w | journal) + cong_lag2w + year
   ),
   data = df_2weeks,
   family = hurdle_poisson(),
   chains = CHAINS, iter = ITER, warmup = WARMUP, seed = BAYES_SEED,
-  silent = 2
+  cores = 4,
+  control = list(adapt_delta = 0.99),
+  prior = prior(normal(0,1), class = sd) +
+    prior(normal(0,1), class = sd, dpar = hu) +
+    prior(normal(0,1), class = b) +
+    prior(normal(0,1), class = Intercept) +
+    prior(lkj(2), class = cor),
+  backend = "cmdstanr"
 )
 
 print(summary(fit_2weeks))
@@ -46,13 +59,20 @@ print(summary(fit_2weeks))
 # 1-MONTH LAG MODEL
 fit_1month <- brm(
   bf(
-    cong_t ~ news_lag1 + cong_lag1 + (1 | journal),
-    hu ~ news_lag1 + cong_lag1 + (1 | journal)
+    cong_t ~ news_lag1 +  (news_lag1 | journal) + cong_lag1 + year,
+    hu ~ news_lag1 +  (news_lag1 | journal) + cong_lag1
   ),
   data = df_1month,
   family = hurdle_poisson(),
   chains = CHAINS, iter = ITER, warmup = WARMUP, seed = BAYES_SEED,
-  silent = 2
+  cores = 4,
+  control = list(adapt_delta = 0.99, max_treedepth = 13),
+  prior = prior(normal(0,1), class = sd) +
+    prior(normal(0,1), class = sd, dpar = hu) +
+    prior(normal(0,1), class = b) +
+    prior(normal(0,1), class = Intercept) +
+    prior(lkj(2), class = cor),
+  backend = "cmdstanr"
 )
 
 print(summary(fit_1month))
@@ -60,13 +80,20 @@ print(summary(fit_1month))
 # 2-MONTH LAG MODEL
 fit_2month <- brm(
   bf(
-    cong_t ~ news_lag2 + cong_lag2 + (1 | journal),
-    hu ~ news_lag2 + cong_lag2 + (1 | journal)
+    cong_t ~ news_lag2 + (cong_lag2 | journal),
+    hu ~ news_lag2 + (cong_lag2 | journal)
   ),
   data = df_2month,
   family = hurdle_poisson(),
   chains = CHAINS, iter = ITER, warmup = WARMUP, seed = BAYES_SEED,
-  silent = 2
+  cores = 4,
+  control = list(adapt_delta = 0.99),
+  prior = prior(normal(0,1), class = sd) +
+    prior(normal(0,1), class = sd, dpar = hu) +
+    prior(normal(0,1), class = b) +
+    prior(normal(0,1), class = Intercept) +
+    prior(lkj(2), class = cor),
+  backend = "cmdstanr"
 )
 
 print(summary(fit_2month))
